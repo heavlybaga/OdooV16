@@ -9,3 +9,7 @@ echo "✅ PostgreSQL ready!"
 
 mkdir -p /tmp/odoo
 exec odoo -c /app/odoo.conf
+echo "DEBUG: Pinging database host..."
+ping -c 3 "$PGHOST" || echo "❌ Ping failed"
+echo "DEBUG: Running pg_isready check..."
+pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER"

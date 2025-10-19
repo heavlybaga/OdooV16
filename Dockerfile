@@ -1,10 +1,12 @@
 FROM odoo:16.0
 
+# copy everything from repo root into /app
+COPY . /app
 WORKDIR /app
-COPY . .
 
-RUN chmod +x /app/entrypoint.sh
+# make entrypoint executable if it exists
+RUN if [ -f entrypoint.sh ]; then chmod +x entrypoint.sh; fi
 
 USER odoo
 EXPOSE 8069
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]

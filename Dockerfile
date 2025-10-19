@@ -1,4 +1,4 @@
-FROM odoo:16.0-slim
+FROM odoo:16.0
 
 USER root
 RUN apt-get update && apt-get install -y     git curl nano libpq-dev  && apt-get clean && rm -rf /var/lib/apt/lists/*

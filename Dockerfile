@@ -1,7 +1,7 @@
 FROM odoo:16.0
 
-USER root
-RUN apt-get update && apt-get install -y     git curl nano libpq-dev  && apt-get clean && rm -rf /var/lib/apt/lists/*
+# The base Odoo image already has the required tools preinstalled.
+# We skip apt-get to avoid repo errors in Render build environment.
 
 COPY ./odoo.conf /etc/odoo/odoo.conf
 COPY ./entrypoint.sh /entrypoint.sh

@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+echo "DEBUG: ADMIN_PASSWD=$ADMIN_PASSWD"
 echo "⏳ Waiting for PostgreSQL..."
 until pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER"; do
   sleep 2

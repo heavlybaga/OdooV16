@@ -1,16 +1,13 @@
 # ------------------------------------------------------------
-# Odoo 16 - Render Free Plan Optimized Dockerfile (Option 2)
-# Lightweight, conflict-free build
+# Odoo 16 - Render Free Plan Optimized Dockerfile (Fixed Permissions)
 # ------------------------------------------------------------
 
-# Use the official Odoo 16 image as base
 FROM odoo:16
 
 # Switch to root for package installation
 USER root
 
 # Install minimal dependencies (no libpq-dev to avoid conflicts)
-# gettext-base provides 'envsubst' used in entrypoint.sh
 RUN apt-get update && apt-get install -y \
     git curl nano gettext-base \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -18,17 +15,17 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy project files into the container
+# Copy project files
 COPY . /app
 
-# Make sure the entrypoint script is executable
-RUN chmod +x /app/entrypoint.sh
+# Fix permissions so odoo user can write to /app
+RUN chmod +x /app/entrypoint.sh && chown -R odoo:odoo /app
 
-# Switch back to the Odoo runtime user for safety
+# Switch back to the Odoo runtime user
 USER odoo
 
-# Expose Odoo's default internal port
+# Expose Odoo internal port
 EXPOSE 8069
 
-# Launch the custom entrypoint script
+# Run entrypoint
 ENTRYPOINT ["/app/entrypoint.sh"]

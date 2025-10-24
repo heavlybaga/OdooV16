@@ -1,9 +1,11 @@
 # ------------------------------------------------------------
-# Odoo 16 - Render Free Plan Optimized Dockerfile
+# Odoo 16 - Render Free Plan Optimized Dockerfile (Fixed permissions)
 # ------------------------------------------------------------
 
-# Use the official Odoo v16 image
 FROM odoo:16
+
+# Switch to root to install packages
+USER root
 
 # Install tools & dependencies, including gettext-base for envsubst
 RUN apt-get update && apt-get install -y \
@@ -19,8 +21,11 @@ COPY . /app
 # Make entrypoint executable
 RUN chmod +x /app/entrypoint.sh
 
+# Switch back to odoo user for runtime
+USER odoo
+
 # Expose Odoo internal port
 EXPOSE 8069
 
-# Run custom entrypoint
+# Start Odoo
 ENTRYPOINT ["/app/entrypoint.sh"]
